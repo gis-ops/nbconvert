@@ -85,7 +85,7 @@ function nbconvert_function($atts) {
 
   $clean_url = preg_replace('#^https?://#', '', rtrim($url,'/'));
   echo $clean_url;
-  $html = file_get_contents("https://nbviewer.jupyter.org/url/" . $clean_url);
+  $html = file_get_contents("https://nbviewer.jupyter.org/" . $clean_url);
   $nb_output = nbconvert_getHTMLByID('notebook-container', $html);
 
   $last_update_date_time = nbconvert_get_most_recent_git_change_for_file_from_api($url);
