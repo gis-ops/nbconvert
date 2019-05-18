@@ -84,7 +84,6 @@ function nbconvert_function($atts) {
      ), $atts));
 
   $clean_url = preg_replace('#^https?://#', '', rtrim($url,'/'));
-  echo $clean_url;
   $html = file_get_contents("https://nbviewer.jupyter.org/url/" . $clean_url);
   $nb_output = nbconvert_getHTMLByID('notebook-container', $html);
 
