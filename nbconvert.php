@@ -8,17 +8,6 @@
    License: MIT
    */
 
-
-
-
-
-wp_enqueue_style( 'NbConvert', plugins_url( '/css/nbconvert.css', __FILE__ ));
-
-
-//tell wordpress to register the nbconvert shortcode
-
-add_shortcode("nbconvert", "nbconvert_handler");
-
 function nbconvert_handler($atts) {
   //run function that actually does the work of the plugin
   $nb_output = nbconvert_function($atts);
@@ -26,8 +15,7 @@ function nbconvert_handler($atts) {
   return $nb_output;
 }
 
-
-function get_most_recent_git_change_for_file_from_api($url) {
+function nbconvert_get_most_recent_git_change_for_file_from_api($url) {
 
   $url_list = explode('/', $url);
 
@@ -96,12 +84,13 @@ function nbconvert_function($atts) {
      ), $atts));
 
   $clean_url = preg_replace('#^https?://#', '', rtrim($url,'/'));
+  echo $clean_url;
   $html = file_get_contents("https://nbviewer.jupyter.org/url/" . $clean_url);
-  $nb_output = getHTMLByID('notebook-container', $html);
+  $nb_output = nbconvert_getHTMLByID('notebook-container', $html);
 
-  $last_update_date_time = get_most_recent_git_change_for_file_from_api($url);
+  $last_update_date_time = nbconvert_get_most_recent_git_change_for_file_from_api($url);
 
-  $converted_nb = '<div class="notebook">
+  /*$converted_nb = '<div class="notebook">
     <div class="nbconvert-labels">
       <label class="github-link">
         <a href="'.$url.'" target="_blank">Check it out on github</a>
@@ -110,13 +99,18 @@ function nbconvert_function($atts) {
       </div>
     <div class="nbconvert">'.$nb_output.'
     </div>
-  </div>';
+  </div>';*/
 
+  $converted_nb = '<div class="notebook">
+    <div class="nbconvert">'.$nb_output.'
+    </div>
+  </div>';
   //send back text to calling function
+  echo $converted_nb;
   return $converted_nb;
 }
 
-function innerHTML(DOMNode $elm) {
+function nbconvert_innerHTML(DOMNode $elm) {
   $innerHTML = '';
   $children  = $elm->childNodes;
 
@@ -127,15 +121,20 @@ function innerHTML(DOMNode $elm) {
   return $innerHTML;
 }
 
-function getHTMLByID($id, $html) {
+function nbconvert_getHTMLByID($id, $html) {
     $dom = new DOMDocument;
     libxml_use_internal_errors(true);
     $dom->loadHTML($html);
     $node = $dom->getElementById($id);
     if ($node) {
-        $inner_output = innerHTML($node);
+        $inner_output = nbconvert_innerHTML($node);
         return $inner_output;
     }
     return FALSE;
 }
-?>
+
+function nbconvert_enqueue_style() {
+	wp_enqueue_style( 'NbConvert', plugins_url( '/css/nbconvert.css', __FILE__ ));
+}
+add_action( 'wp_enqueue_scripts', 'nbconvert_enqueue_style' );
+add_shortcode("nbconvert", "nbconvert_handler");
