@@ -88,7 +88,7 @@ function nbconvert_function($atts) {
   $html = file_get_contents($jup_url . $clean_url);
   $nb_output = nbconvert_getHTMLByID('notebook-container', $html);
 
-  $last_update_date_time = nbconvert_get_most_recent_git_change_for_file_from_api($url);
+  //$last_update_date_time = nbconvert_get_most_recent_git_change_for_file_from_api($url);
 
   /*$converted_nb = '<div class="notebook">
     <div class="nbconvert-labels">
@@ -107,7 +107,7 @@ function nbconvert_function($atts) {
   </div>';
   //send back text to calling function
   echo $converted_nb;
-  return $converted_nb;
+  //return $converted_nb;
 }
 
 function nbconvert_innerHTML(DOMNode $elm) {
