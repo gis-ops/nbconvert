@@ -45,38 +45,6 @@ function nbconvert_get_most_recent_git_change_for_file_from_api($url) {
   return $max_datetime_f;
 }
 
-/*
-function get_most_recent_git_change_for_file($url) {
-  
-  $url_list = explode('/', $url);
-  $url_list[5] = 'blame';
-  $new_url = implode("/", $url_list);
-  //Load the HTML page
-  $html = file_get_contents($new_url);
-  
-  //Create a new DOM document
-  $dom = new DOMDocument;
-  libxml_use_internal_errors(true);
-  $dom->loadHTML($html);
-  
-  // Get all time-ago tags
-  $time_agos = $dom->getElementsByTagName('time-ago');
-
-  $mostRecent= 0;
-  foreach($time_agos as $time_ago){
-    $datetime = $time_ago->getAttribute('datetime');
-    $curDate = strtotime($datetime);
-    if ($curDate > $mostRecent) {
-       $mostRecent = $curDate;
-    }
-  }
-
-  $max_date = date('d/m/Y H:i:s', $mostRecent);
-  return $max_date;
-  
-}
-*/
-
 function nbconvert_function($atts) {
   //process plugin
   extract(shortcode_atts(array(
@@ -90,7 +58,7 @@ function nbconvert_function($atts) {
 
   $last_update_date_time = nbconvert_get_most_recent_git_change_for_file_from_api($url);
 
-  /*$converted_nb = '<div class="notebook">
+  $converted_nb = '<div class="notebook">
     <div class="nbconvert-labels">
       <label class="github-link">
         <a href="'.$url.'" target="_blank">Check it out on github</a>
@@ -99,15 +67,15 @@ function nbconvert_function($atts) {
       </div>
     <div class="nbconvert">'.$nb_output.'
     </div>
-  </div>';*/
+  </div>';
 
-  $converted_nb = '<div class="notebook">
+  /*$converted_nb = '<div class="notebook">
     <div class="nbconvert">'.$nb_output.'
     </div>
   </div>';
   //send back text to calling function
+  */
   echo $converted_nb;
-  return $converted_nb;
 }
 
 function nbconvert_innerHTML(DOMNode $elm) {
