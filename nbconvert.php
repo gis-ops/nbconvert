@@ -88,9 +88,9 @@ function nbconvert_function($atts) {
   $html = file_get_contents($jup_url . $clean_url);
   $nb_output = nbconvert_getHTMLByID('notebook-container', $html);
 
-  //$last_update_date_time = nbconvert_get_most_recent_git_change_for_file_from_api($url);
+  $last_update_date_time = nbconvert_get_most_recent_git_change_for_file_from_api($url);
 
-  /*$converted_nb = '<div class="notebook">
+  $converted_nb = '<div class="notebook">
     <div class="nbconvert-labels">
       <label class="github-link">
         <a href="'.$url.'" target="_blank">Check it out on github</a>
@@ -99,12 +99,14 @@ function nbconvert_function($atts) {
       </div>
     <div class="nbconvert">'.$nb_output.'
     </div>
-  </div>';*/
+  </div>';
 
+  /*
   $converted_nb = '<div class="notebook">
     <div class="nbconvert">'.$nb_output.'
     </div>
   </div>';
+  */
   //send back text to calling function
   echo $converted_nb;
   //return $converted_nb;
